@@ -29,39 +29,52 @@ from copy import deepcopy
 
 class Beat:
 
-    def __init__(self, key=c, rand_key=True, mode='major', rand_mode=True,
-                 force_unique=True, force_root=True, omit_diminished=True, octave=0, arp_pattern=0,
-                 arp_duration=.25, rand_arp=True):
-        self.mode = self.select_mode(user_mode=mode, random=rand_mode)
-        self.key = self.select_key(user_key=key, random=rand_key)
+    def __init__(self,
+                 key=-1,
+                 mode=-1,
+                 octave=0,
+                 prog_len=-1,
+                 bass_note_len=-1,
+                 force_unique=True,
+                 force_root=True,
+                 omit_diminished=True,
+                 arp_pattern=-1,
+                 arp_duration=-1):
+        self.mode = self.select_mode(user_mode=mode)
+        self.key = self.select_key(user_key=key)
         self.root = middle_c + self.key
         self.tempo = self.set_tempo()
         self.scale = self.determine_scale()
         self.chords = self.generate_chords()
-        self.prog = self.select_progression(force_unique=force_unique,
+        self.prog = self.select_progression(length=prog_len, force_unique=force_unique,
                                             force_root=force_root, omit_diminished=omit_diminished)
         self.octave = octave
+        self.arp_pattern = arp_pattern
         self.midi = self.initialize_midi()
         self.select_instruments()
-        self.arp_pattern = self.select_arpeggio(user=arp_pattern, random=rand_arp)
         self.write_progression()
-        self.write_bassline()
-        self.write_arpeggio_and_melody(pattern_index=self.arp_pattern, note_duration=arp_duration)
+        self.write_bassline(note_duration=bass_note_len)
+        self.write_arpeggio_and_melody(pattern=arp_pattern, note_duration=arp_duration)
 
-    def select_mode(self, random=True, user_mode='major'):
-        selector = randint(0, 10000)
-        mode = user_mode
-        if random:
-            if selector > 5000:
-                mode = 'minor'
-            else:
-                mode = 'major'
+    @staticmethod
+    def select_mode(user_mode=-1):
+        selector = 0
+        if user_mode == -1:
+            selector = randint(0, 10000)
+        elif user_mode > 0:
+            selector = 9999
+
+        if selector > 5000:
+            mode = 'minor'
+        else:
+            mode = 'major'
         return mode
 
-    def select_key(self, random=True, user_key=c):
+    @staticmethod
+    def select_key(user_key=-1):
         selector = randint(0, 11)
         key = user_key
-        if random:
+        if user_key == -1:
             key = selector
         return key
 
@@ -118,6 +131,10 @@ class Beat:
         """
         from the generated chords, make a progression of a specified length (default=4)
         """
+        prog_len = length
+        if length == -1:
+            prog_len = 4
+
         progression = []
         chords_copy = deepcopy(self.chords)
         if omit_diminished:
@@ -125,7 +142,7 @@ class Beat:
                 chords_copy.pop(1)
             else:
                 chords_copy.pop(len(chords_copy)-1)
-        for i in range(length):
+        for i in range(prog_len):
             max_index = len(chords_copy)-1
             index = randint(0, max_index)
             if force_root and (i == 0):
@@ -135,12 +152,6 @@ class Beat:
                 chords_copy.pop(index)
         return progression
 
-    def select_arpeggio(self, user, random=True):
-        val = user
-        if random:
-            return randint(0, len(PATTERNS)-1)
-        return val
-
     def print_progression(self):
         print("Progression: ", end='')
         for i in range(len(self.prog)):
@@ -148,6 +159,10 @@ class Beat:
         print()
 
     def write_bassline(self, num_phrases=1, note_duration=0.5, start_time=0):
+        note_dur = note_duration
+        if note_duration == -1:
+            note_dur = 0.5
+
         current_time = start_time
         for i in range(len(self.prog)):
             cur = self.prog[i]
@@ -160,11 +175,20 @@ class Beat:
             for j in range(num_phrases):
                 while total_duration < 4:
                     self.midi.addNote(track=1, channel=1, pitch=root,
-                                      time=current_time, duration=note_duration, volume=100)
-                    total_duration += note_duration
-                    current_time += note_duration
+                                      time=current_time, duration=note_dur, volume=100)
+                    total_duration += note_dur
+                    current_time += note_dur
 
-    def write_arpeggio_and_melody(self, num_phrases=1, note_duration=0.25, start_time=0, pattern_index=0):
+    def write_arpeggio_and_melody(self, num_phrases=1, note_duration=0.25, start_time=0, pattern=-1):
+        note_dur = note_duration
+        if note_duration == -1:
+            note_dur = 0.25
+
+        pattern_index = pattern
+        if pattern == -1:
+            pattern_index = randint(0, len(PATTERNS)-1)
+            self.arp_pattern = pattern_index
+
         current_time = start_time
         pattern = PATTERNS[pattern_index]
         # this is definitely the most efficient algorithm for this task
@@ -175,26 +199,27 @@ class Beat:
             for k in range(len(self.prog)):
                 chord = self.prog[k]
                 # this code outputs the sequence of notes for a given chord
-                for j in range(int(1/note_duration)):
+                for j in range(int(1/note_dur)):
                     # this code outputs all the notes of the arpeggio exactly once
                     for i in range(len(pattern)):
                         cur_index = pattern[i]
                         arp_pitch = chord[cur_index] - 12
-                        mel_pitch = arp_pitch +12
+                        mel_pitch = arp_pitch + 12
                         mel_pitch = self.tamper(mel_pitch)
 
                         if not mel_pitch == 0:
                             self.midi.addNote(track=3, channel=3, pitch=mel_pitch,
-                                              time=current_time, duration=note_duration, volume=100)
+                                              time=current_time, duration=note_dur, volume=100)
                         if arp_note_counter % 2 == 0:
                             self.midi.addNote(track=2, channel=2, pitch=arp_pitch,
-                                              time=current_time, duration=(2*note_duration), volume=100)
+                                              time=current_time, duration=(2*note_dur), volume=100)
                             self.midi.addNote(track=2, channel=2, pitch=arp_pitch+g,
-                                              time=current_time, duration=(2 * note_duration), volume=100)
-                        current_time += note_duration
+                                              time=current_time, duration=(2 * note_dur), volume=100)
+                        current_time += note_dur
                         arp_note_counter += 1
 
-    def tamper(self, val):
+    @staticmethod
+    def tamper(val):
         """
         This function uses some basic random logic to make somewhat interesting random melodies
         :param val: the pitch that is getting messed with
