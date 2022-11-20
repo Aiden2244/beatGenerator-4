@@ -67,6 +67,7 @@ def determine_triad_identity(chord=(60, 64, 67)):
     root_note_str = NOTES[root]
 
     print(root_note_str + ' ' + type_of_chord, end=" ")
+    return [root_note_str, type_of_chord]
 
 
 # a list for keeping track of arpeggio patterns. The numbers in the tuples correspond to the
@@ -77,6 +78,7 @@ PATTERNS = [
 
     (0, 1, 2, 1),
     (0, 1, 0, 2),
+
 ]
 
 # TRACK INSTRUMENT HANDLING
@@ -94,17 +96,17 @@ PATTERNS = [
 
 # Below is a list of tuples. The tuple's place in the list corresponds to the instrument channel
 # it programs. The numbers within the list are the midi instruments that can be used
-PIANOS = [0, 4, 5, 6]
+PIANOS = [0, 4, 5]
 DRUMS = [9, 73]
-ELEC_DRUMS = [25]
+ELEC_DRUMS = [118, 119, 118]
 PERCUSSION = [10, 11, 12, 13]
 ROCK_ORGANS = [16, 17, 18]
 TRAD_ORGANS = [19, 20, 21, 22, 82]
 ACOUSTIC_GUITARS = [31, 15]
-ELEC_GUITARS = [26, 27, 28, 29]
+ELEC_GUITARS = [26, 28, 29]
 BASSES = [32, 33, 34, 35]
 SYNTH_BASSES = [38, 39]
-ORCHESTRAL = [40, 41, 46, 55, 56, 58, 60, 64, 68, 69, 71, 74]
+ORCHESTRAL = [40, 41, 55, 56, 58, 60, 64, 68, 69, 71, 74]
 LEAD_SYNTHS = [80, 83, 84, 86, 87, 112, 14]  # omitted 81
 PADS = [53, 76, 75, 85, 62, 51, 88, 90, 92, 93, 50, 94, 95, 96,
         99, 101, 102, 103, 122]
@@ -114,25 +116,28 @@ PADS = [53, 76, 75, 85, 62, 51, 88, 90, 92, 93, 50, 94, 95, 96,
 INSTRUMENTS = [
     [],  # chords 0
     [],  # bass 1
-    [],  # arp 2
-    [],  # melody 3
-    [],  # kick 4
-    [],  # snare 5
+    [],  # moving chords 2
+    [],  # arp 3
+    [],  # melody 4
+    [],  # kick 5
+    [],  # snare 6
 
 ]
 
 # The thing that does the selecting
-INSTRUMENTS[0] += (PIANOS + TRAD_ORGANS + ORCHESTRAL + PADS)
+INSTRUMENTS[0] += (PIANOS + TRAD_ORGANS + ROCK_ORGANS + ORCHESTRAL + PADS)
 INSTRUMENTS[1] += (BASSES + SYNTH_BASSES)
-INSTRUMENTS[2] += (PIANOS + ROCK_ORGANS + ACOUSTIC_GUITARS + ELEC_GUITARS + LEAD_SYNTHS)
-INSTRUMENTS[3] += (PIANOS + ROCK_ORGANS + ACOUSTIC_GUITARS + ELEC_GUITARS + LEAD_SYNTHS)
-INSTRUMENTS[4] += (DRUMS + ELEC_DRUMS)
-INSTRUMENTS[5] += (DRUMS + ELEC_DRUMS)
+INSTRUMENTS[2] += (PIANOS + TRAD_ORGANS + PADS + ORCHESTRAL)
+INSTRUMENTS[3] += (PIANOS + ROCK_ORGANS + PERCUSSION)
+INSTRUMENTS[4] += (LEAD_SYNTHS + PIANOS + ELEC_GUITARS + ROCK_ORGANS)
+INSTRUMENTS[5] += ELEC_DRUMS
+INSTRUMENTS[6] += ELEC_DRUMS
 
 
 def get_instrument_val(i):
     cur_list = INSTRUMENTS[i]
     max_index = len(cur_list) - 1
     rand_index = randint(0, max_index)
+    print("Generating track " + str(i) + " with random index " + str(rand_index))
     print(cur_list[rand_index])
     return cur_list[rand_index]
