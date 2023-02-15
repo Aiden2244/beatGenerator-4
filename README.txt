@@ -37,7 +37,13 @@ use the program.
         into your "Downloads" folder (it should go there by default).
 
     2.  In the "beatGenerator-4-master" folder, there will be a file called
-        "Python Beat Generator" which will run the program if you click on it.
+        "Python Beat Generator" which will run the program if you click on it. If
+        your Mac will not let you run the program due to security reasons,
+        go to your Settings app and find the "Privacy and Security" button on the
+        left hand side of the screen. After clicking, scroll down in the main window
+        until you find the "Security" heading. It should show you a message stating
+        "Python Beat Generator" could not be opened because it is from an unidentified
+        developer." Click on "Open anyway" and enter in your password to run the app.
 
             NOTE: the program will not run unless the folder "beatGenerator-4-master"
             is within the "Downloads" folder on your system.
