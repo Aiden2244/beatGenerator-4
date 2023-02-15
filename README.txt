@@ -32,18 +32,19 @@ user has no experience with Bash or programming, but even so it is relatively ea
 use the program.
 
     DOWNLOAD AND RUN
-    1.  Download the repository "beatgenerator-4" from GitHub and move the folder called
-        "beatGenerator-4" into your "Downloads" folder (it should go there by default).
+    1.  Download the repository "beatgenerator-4" as a zip file from GitHub and open it.
+        It should produce a folder called "beatGenerator-4-master", which you should move
+        into your "Downloads" folder (it should go there by default).
 
-    2.  In the "beatGenerator-4" folder, there will be a file called "Python Beat Generator"
-        which will run the program if you click on it.
+    2.  In the "beatGenerator-4-master" folder, there will be a file called
+        "Python Beat Generator" which will run the program if you click on it.
 
-            NOTE: the program will not run unless
-            the folder "beatGenerator-4" is within the "Downloads" folder on your system.
+            NOTE: the program will not run unless the folder "beatGenerator-4-master"
+            is within the "Downloads" folder on your system.
 
             (ADVANCED: for those familiar with Bash, all the executable does is run the command
-            "$ python3 ~/Downloads/beatGenerator4" and if you want to move the directory elsewhere
-            you can just edit the path in the exec file)
+            "$ python3 ~/Downloads/beatGenerator4-master" and if you want to move the directory
+            elsewhere you can just edit the path in the exec file)
 
     3.  A window should pop up. Press the button that says "Generate Beat." It should automatically
         open up GarageBand to the brand new beat! Pressing "Generate Beat" will open both GarageBand
