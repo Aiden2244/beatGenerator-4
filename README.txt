@@ -1,8 +1,70 @@
+OVERVIEW ----------------------------------------------------------------------------------
+
+This is a pure python program for macOS. Executing the program will prompt the user to
+press a button that generates a brief piece of music in GarageBand. Each piece of music
+is unique, 4 measures long, and uses an assortment of different instruments in order to
+create variety. A combination of random number generation and constraints I have put in
+place make it so each beat sounds different but maintains a degree of cohesiveness and
+"listenability."
+
+I wrote this program as a research project for a class on music and appropriation I took
+during my time as an undergraduate at Georgetown University. The program, which uses no
+AI at any stage of the process, generates a piece of music automatically according to a
+strict, previously-defined template.
+
+The source for this program is copyright protected, but any music generated from it is
+free for the public to use.
+
+The MIDI API is provided by the MIDIUtil python library, written by Mark Conway Wirt
+and used with permission for educational purposes. The link to the docs is here:
+https://midiutil.readthedocs.io/en/1.2.1/common.html
 
 
 
+HOW TO USE --------------------------------------------------------------------------------
 
-HOW IT WORKS ------------------------------------------------------------------------------
+In order to use this program, you need to be using a computer running macOS and have
+GarageBand installed (its free and on most Mac laptops, it should be by default). You
+also need to have python 3 installed on your computer as well in order to run the program.
+You can download the latest version from this website: https://www.python.org/downloads/ .
+After you have set this up, proceed with the download and usage. I am assuming that the
+user has no experience with Bash or programming, but even so it is relatively easy to
+use the program.
+
+    DOWNLOAD AND RUN
+    1.  Download the repository "beatgenerator-4" from GitHub and move the folder called
+        "beatGenerator-4" into your "Downloads" folder (it should go there by default).
+
+    2.  In the "beatGenerator-4" folder, there will be a file called "Python Beat Generator"
+        which will run the program if you click on it.
+
+            NOTE: the program will not run unless
+            the folder "beatGenerator-4" is within the "Downloads" folder on your system.
+
+            (ADVANCED: for those familiar with Bash, all the executable does is run the command
+            "$ python3 ~/Downloads/beatGenerator4" and if you want to move the directory elsewhere
+            you can just edit the path in the exec file)
+
+    3.  A window should pop up. Press the button that says "Generate Beat." It should automatically
+        open up GarageBand to the brand new beat! Pressing "Generate Beat" will open both GarageBand
+        and Terminal, and you can look at the output in the terminal to get information about the
+        beat.
+
+            NOTE: Sometimes, if GarageBand is not previously opened, the program will not take you to
+            the generated beat. If you press "Generate Beat" and it opens GarageBand but does open up
+            an untitled project, just press the "Generate Beat" button again.
+
+    4. 	Repeat as many times as you like! The program will automatically stop once the window is
+        closed.
+
+    OPTIONAL: The program generates most of the information about the beat, such as its key signature
+    and tempo using random number generation. This should be fine for the vast majority of users, but
+    if you would like to manually specify information for your generated beats, you can change some
+    of the settings in the "generator.py" file. More information on how to do that when is in the
+    file itself.
+
+
+HOW IT WORKS (FOR THE NERDS) --------------------------------------------------------------
 
 beat.py does most of the "heavy lifting" for the program. From either user input,
 random number generation, or a combination of both, this file programmatically
@@ -25,7 +87,8 @@ assembles the beat in the process detailed below.
         mode of the scale. These intervals are hard-coded as lists of ints, where the tonic
         note of the scale = 0 and every subsequent entry is how many semitones above the root
         the proceeding note is. To build the scale that the beat actually uses, add each value
-        of the hard-coded interval to the root note value, and append it to a list called scale
+        of the hard-coded interval to the root note value, and append it to a list called
+        scale.
 
     4b. By default, the previous step generates either the C major or C minor scale. To get
         other keys to work, add the key value determined in step 2 to each value in the scale
@@ -55,25 +118,26 @@ assembles the beat in the process detailed below.
     ARPEGGIO, MELODY, AND BASS LINE GENERATION
     7.  The bass line is simple: iterate over the list of chords used in the beat called prog,
         (not to be confused with chords, which are the chords the beat CAN use and is a superset
-        of prog), find the root note of the chord, drop it down a couple of octaves, and repeat it.
-        That was easy.
+        of prog), find the root note of the chord, drop it down a couple of octaves, and repeat
+        it. That was easy.
 
     8a. The arpeggio is a little more complicated. The music.py file contains some hardcoded info
         on how to build the arpeggio. The arpeggio algorithm randomly selects a 4-int long tuple
         containing chord indexes. It then iterates over every chord in prog and outputs the
-        notes (after lowering them by an octave) of the chord according to the pattern in the tuple.
-        Simple, right? The way it actually does this is a little more complicated, but this is the
-        necessary information.
+        notes (after lowering them by an octave) of the chord according to the pattern in the
+        tuple. Simple, right? The way it actually does this is a little more complicated, but this
+        is the necessary information.
 
-    8b. Fundamentally, the melody is generated the same way that the arpeggio is, with some modifications.
-        The melody starts with the same pattern as the arpeggio, then runs each value through a "tampering"
-        method, which essentially:
+    8b. Fundamentally, the melody is generated the same way that the arpeggio is, with some
+        modifications. The melody starts with the same pattern as the arpeggio, then runs each
+        value through a "tampering" method, which essentially:
             i.  Generates a random number in [0,10000]
             ii. Based on the number generated, can modify the note by changing its octave, raising
                 it by a fifth, or simply omitting it from the melody.
-        This relatively simple algorithm actually produces interesting yet pleasant sounding melodies.
+        This relatively simple algorithm actually produces interesting yet pleasant sounding
+        melodies.
 
     WRITING
-    9.  In each of the aforementioned steps, where necessary, the data for the notes were written to
-        a MIDIFile object from the midiutil.MidiFile module. The beat then gets written to a midifile,
-        where it can be opened by a midi player or a DAW like logic
+    9.  In each of the aforementioned steps, where necessary, the data for the notes were written
+        to a MIDIFile object from the midiutil.MidiFile module. The beat then gets written
+        to a midifile, where it can be opened by a midi player or a DAW like GarageBand.

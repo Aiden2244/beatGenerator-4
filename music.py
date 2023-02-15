@@ -5,7 +5,7 @@ Created by Aiden McCormack on 11-13-2022
 Stores some information that is useful for the entire program, such as
 note values, a procedure for converting note values to strings, and more
 
-© Copyright Aiden McCormack, 2022, All rights reserved.
+© Copyright Aiden McCormack, 2022-2023, All rights reserved.
 """
 
 from random import randint

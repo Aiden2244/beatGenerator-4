@@ -5,15 +5,7 @@ Created by Aiden McCormack on 11-13-2022
 This file declares the Beat object, which encapsulates all of the information
 needed to generate and write the beat.
 
-
-
-    TODO:
-        -   The beat itself could be substantially longer. The program pretty much just produces loops,
-            so either hardcode a structure you want it to follow or set constraints on how the beat can
-            do it itself.
-        -   Edit volume options so the track mixes a little better.
-
-© Copyright Aiden McCormack, 2022, All rights reserved.
+© Copyright Aiden McCormack, 2022-2023, All rights reserved.
 """
 
 from midiutil.MidiFile import MIDIFile
