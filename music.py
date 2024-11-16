@@ -27,18 +27,20 @@ b = 11
 OCTAVE = 12
 
 # the inverse of the above---relates offset to a string
-NOTES = ('C',
-         'Db',
-         'D',
-         'Eb',
-         'E',
-         'F',
-         'Gb',
-         'G',
-         'Ab',
-         'A',
-         'Bb',
-         'B')
+NOTES = (
+    'C',
+    'Db',
+    'D',
+    'Eb',
+    'E',
+    'F',
+    'Gb',
+    'G',
+    'Ab',
+    'A',
+    'Bb',
+    'B'
+)
 
 
 # takes a triad as an input and outputs the string representation of the triad

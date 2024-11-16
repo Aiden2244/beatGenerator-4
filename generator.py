@@ -63,22 +63,24 @@ num_phrases = -1  # the number of 4-measure loops to generate [1, ]
 
 def generate():
     if GUI:
-        __OUTPUT__ = Beat(key=key,
-                    mode=mode,
-                    octave=octave,
-                    tempo=tempo,
-                    prog_len=prog_len,
-                    bass_note_len=bass_note_len,
-                    force_unique=force_unique,
-                    force_root=force_root,
-                    omit_diminished=omit_diminished,
-                    random_instruments=random_instruments,
-                    arp_pattern=arp_pattern,
-                    arp_duration=arp_duration,
-                    drum_mode=drum_mode,
-                    num_phrases=num_phrases)
-        __OUTPUT__.info()
-        __OUTPUT__.write()
+        output = Beat(
+            key=key,
+            mode=mode,
+            octave=octave,
+            tempo=tempo,
+            prog_len=prog_len,
+            bass_note_len=bass_note_len,
+            force_unique=force_unique,
+            force_root=force_root,
+            omit_diminished=omit_diminished,
+            random_instruments=random_instruments,
+            arp_pattern=arp_pattern,
+            arp_duration=arp_duration,
+            drum_mode=drum_mode,
+            num_phrases=num_phrases
+        )
+        output.info()
+        output.write()
         os.system("open -a GarageBand.app output.mid")
 
     else:
@@ -89,29 +91,29 @@ def generate():
             return False
         elif first_input == 'c':
             print("Custom mode activated. Generating beat with hardcoded settings...")
-            __OUTPUT__ = Beat(
-                    key=key,
-                    mode=mode,
-                    octave=octave,
-                    tempo=tempo,
-                    prog_len=prog_len,
-                    bass_note_len=bass_note_len,
-                    force_unique=force_unique,
-                    force_root=force_root,
-                    omit_diminished=omit_diminished,
-                    random_instruments=random_instruments,
-                    arp_pattern=arp_pattern,
-                    arp_duration=arp_duration,
-                    drum_mode=drum_mode,
-                    num_phrases=num_phrases
-                    )
+            output = Beat(
+                key=key,
+                mode=mode,
+                octave=octave,
+                tempo=tempo,
+                prog_len=prog_len,
+                bass_note_len=bass_note_len,
+                force_unique=force_unique,
+                force_root=force_root,
+                omit_diminished=omit_diminished,
+                random_instruments=random_instruments,
+                arp_pattern=arp_pattern,
+                arp_duration=arp_duration,
+                drum_mode=drum_mode,
+                num_phrases=num_phrases
+            )
         else:
             print("Generating...")
-            __OUTPUT__ = Beat()
+            output= Beat()
         print("done!")
 
-        __OUTPUT__.info()
-        __OUTPUT__.write()
+        output.info()
+        output.write()
         os.system("open -a GarageBand.app output.mid")
 
         return True
