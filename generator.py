@@ -28,7 +28,7 @@ assign EVERY value.
 
 """ CONTROL PANEL """
 
-GUI = True  # enables the graphical user interface (false runs the CLI)
+GUI = False  # enables the graphical user interface (false runs the CLI)
 force_unique = True  # disables the repetition of chords in the beat progression if true
 force_root = True  # makes the first chord in the progression the tonic chord if true
 omit_diminished = True  # the progression will not include diminished chords if true
