@@ -5,7 +5,7 @@ midi = MIDIFile(16)
 for i in range(129):
     if i % 16 == 0:
         outstring = "sounds_" + str(i) + ".mid"
-        with open(outstring, 'wb') as mid:
+        with open(outstring, "wb") as mid:
             midi.writeFile(mid)
         index = 0
         midi = MIDIFile(16)

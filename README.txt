@@ -12,8 +12,8 @@ during my time as an undergraduate at Georgetown University. The program, which 
 AI at any stage of the process, generates a piece of music automatically according to a
 strict, previously-defined template.
 
-The source for this program is copyright protected, but any music generated from it is
-free for the public to use.
+The source for this program is released under the MIT license, and any music generated
+from it is free for the public to use.
 
 The MIDI API is provided by the MIDIUtil python library, written by Mark Conway Wirt
 and used with permission for educational purposes. The link to the docs is here:

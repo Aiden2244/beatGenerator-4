@@ -1,11 +1,9 @@
 """
 music.py
-Created by Aiden McCormack on 11-13-2022
 
 Stores some information that is useful for the entire program, such as
 note values, a procedure for converting note values to strings, and more
 
-© Copyright Aiden McCormack, 2022-2023, All rights reserved.
 """
 
 from random import randint
@@ -27,25 +25,12 @@ b = 11
 OCTAVE = 12
 
 # the inverse of the above---relates offset to a string
-NOTES = (
-    'C',
-    'Db',
-    'D',
-    'Eb',
-    'E',
-    'F',
-    'Gb',
-    'G',
-    'Ab',
-    'A',
-    'Bb',
-    'B'
-)
+NOTES = ("C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B")
 
 
 # takes a triad as an input and outputs the string representation of the triad
 def determine_triad_identity(chord=(60, 64, 67)):
-    type_of_chord = 'undefined'
+    type_of_chord = "undefined"
     fifth = chord[2]
     third = chord[1]
     root = chord[0]
@@ -55,20 +40,20 @@ def determine_triad_identity(chord=(60, 64, 67)):
     if fifth < root:
         fifth += OCTAVE
 
-    if third-root == 4:
-        type_of_chord = 'major'
-    elif third-root == 3:
-        if fifth-third == 4:
-            type_of_chord = 'minor'
+    if third - root == 4:
+        type_of_chord = "major"
+    elif third - root == 3:
+        if fifth - third == 4:
+            type_of_chord = "minor"
         else:
-            type_of_chord = 'diminished'
+            type_of_chord = "diminished"
 
     while root >= OCTAVE:
         root -= OCTAVE
 
     root_note_str = NOTES[root]
 
-    print(root_note_str + ' ' + type_of_chord, end=" ")
+    print(root_note_str + " " + type_of_chord, end=" ")
     return [root_note_str, type_of_chord]
 
 
@@ -77,10 +62,8 @@ def determine_triad_identity(chord=(60, 64, 67)):
 # melodic stuff will be handled by the solo function.
 # NOTE: It is assumed that the scale being referenced is a heptatonic scale (major scale or some mode of it).
 PATTERNS = [
-
     (0, 1, 2, 1),
     (0, 1, 0, 2),
-
 ]
 
 # TRACK INSTRUMENT HANDLING
@@ -110,8 +93,7 @@ BASSES = [32, 33, 34, 35]
 SYNTH_BASSES = [38, 39]
 ORCHESTRAL = [40, 41, 55, 56, 58, 60, 64, 68, 69, 71, 74]
 LEAD_SYNTHS = [80, 83, 84, 86, 87, 112, 14]  # omitted 81
-PADS = [53, 76, 75, 85, 62, 51, 88, 90, 92, 93, 50, 94, 95, 96,
-        99, 101, 102, 103, 122]
+PADS = [53, 76, 75, 85, 62, 51, 88, 90, 92, 93, 50, 94, 95, 96, 99, 101, 102, 103, 122]
 
 # initializes a list of lists. Each list in the list lists the program numbers
 # each track will be able to use, and these numbers are selected by instrument type.
@@ -123,15 +105,14 @@ INSTRUMENTS = [
     [],  # melody 4
     [],  # kick 5
     [],  # snare 6
-
 ]
 
 # The thing that does the selecting
-INSTRUMENTS[0] += (PIANOS + TRAD_ORGANS + ROCK_ORGANS + ORCHESTRAL + PADS)
-INSTRUMENTS[1] += (BASSES + SYNTH_BASSES)
-INSTRUMENTS[2] += (PIANOS + TRAD_ORGANS + PADS + ORCHESTRAL)
-INSTRUMENTS[3] += (PIANOS + ROCK_ORGANS + PERCUSSION)
-INSTRUMENTS[4] += (LEAD_SYNTHS + PIANOS + ELEC_GUITARS + ROCK_ORGANS)
+INSTRUMENTS[0] += PIANOS + TRAD_ORGANS + ROCK_ORGANS + ORCHESTRAL + PADS
+INSTRUMENTS[1] += BASSES + SYNTH_BASSES
+INSTRUMENTS[2] += PIANOS + TRAD_ORGANS + PADS + ORCHESTRAL
+INSTRUMENTS[3] += PIANOS + ROCK_ORGANS + PERCUSSION
+INSTRUMENTS[4] += LEAD_SYNTHS + PIANOS + ELEC_GUITARS + ROCK_ORGANS
 INSTRUMENTS[5] += ELEC_DRUMS
 INSTRUMENTS[6] += ELEC_DRUMS
 
